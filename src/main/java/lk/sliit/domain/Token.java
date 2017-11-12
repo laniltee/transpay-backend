@@ -1,5 +1,6 @@
 package lk.sliit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,6 +27,10 @@ public class Token implements Serializable{
     private Long id;
 
     private String type;
+
+    @OneToOne
+    @JsonIgnore
+    private Customer customer;
 
     @Min(0)
     private float balance;
