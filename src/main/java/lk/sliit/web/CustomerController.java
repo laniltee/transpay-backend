@@ -1,14 +1,15 @@
 package lk.sliit.web;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import lk.sliit.domain.Customer;
 import lk.sliit.domain.LoginRequest;
+import lk.sliit.domain.Payment;
+import lk.sliit.domain.UserToken;
 import lk.sliit.repository.CustomerRepository;
+import lk.sliit.repository.PaymentRepository;
+import lk.sliit.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -25,6 +26,12 @@ public class CustomerController {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    TokenRepository tokenRepository;
+
+    @Autowired
+    PaymentRepository paymentRepository;
 
     @GetMapping(path = "/customers")
     public List<Customer> getAllCustomers() {
@@ -51,4 +58,35 @@ public class CustomerController {
         }
         return customer;
     }
+
+    @PostMapping(path = "/tokens")
+    public UserToken createToken(@Valid @RequestBody UserToken userToken) {
+        return tokenRepository.save(userToken);
+    }
+
+    @GetMapping(path = "/tokens")
+    public List<UserToken> getAllTokens() {
+        return tokenRepository.findAll();
+    }
+
+    @GetMapping(path = "/tokens/customers/{id}")
+    public UserToken getAllTokens(@PathVariable Long id) {
+        return tokenRepository.findByCustomer_Id(id);
+    }
+
+    @PostMapping(path = "/payments")
+    public Payment createPayment(@Valid @RequestBody Payment payment) {
+        UserToken userToken = tokenRepository.findOne(payment.getTokenId());
+        userToken.setBalance(userToken.getBalance() + payment.getAmount());
+        UserToken updatedToken = tokenRepository.save(userToken);
+        return paymentRepository.save(payment);
+    }
+
+    @GetMapping(path = "/payments/tokens/{id}")
+    public List<Payment> getPaymentsByTokenId(@PathVariable Long id) {
+        return paymentRepository.getAllByTokenId(id);
+    }
+
+
+
 }
