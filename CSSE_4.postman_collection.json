@@ -1,0 +1,146 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CSSE_4",
+		"_postman_id": "cf2a5694-e784-c694-1cfc-d18adbb4dd29",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all stops",
+			"request": {
+				"url": "http://localhost:8081/api/stops",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all journeys",
+			"request": {
+				"url": "http://localhost:8081/api/journeys",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new stop",
+			"request": {
+				"url": "http://localhost:8081/api/stops",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"journeyId\": 1,\n\t\"name\": \"Habarakada\",\n\t\"distance\": 2,\n\t\"stopIndex\": 1,\n\t\"baseFare\": 12\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new journey",
+			"request": {
+				"url": "http://localhost:8081/api/journeys",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"190 - Meegoda - Pettah\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get stops by journey",
+			"request": {
+				"url": "http://localhost:8081/api/stops/journeys/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all trips",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8081/api/trips?filter=active",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"trips"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "active",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all rides",
+			"request": {
+				"url": "localhost:8081/api/rides/customers/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new ride",
+			"request": {
+				"url": "localhost:8081/api/rides",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerId\": 1,\n\t\"startedAt\": 1,\n\t\"endedAt\": 2,\n\t\"amount\": 20.99,\n\t\"journeyId\": 1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

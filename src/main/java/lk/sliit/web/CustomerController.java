@@ -1,15 +1,14 @@
 package lk.sliit.web;
 
-import lk.sliit.domain.Customer;
-import lk.sliit.domain.LoginRequest;
-import lk.sliit.domain.Payment;
-import lk.sliit.domain.UserToken;
+import lk.sliit.domain.*;
 import lk.sliit.repository.CustomerRepository;
 import lk.sliit.repository.PaymentRepository;
+import lk.sliit.repository.RideRepository;
 import lk.sliit.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -32,6 +31,9 @@ public class CustomerController {
 
     @Autowired
     PaymentRepository paymentRepository;
+
+    @Autowired
+    RideRepository rideRepository;
 
     @GetMapping(path = "/customers")
     public List<Customer> getAllCustomers() {
@@ -69,6 +71,14 @@ public class CustomerController {
         return tokenRepository.findAll();
     }
 
+    @PutMapping(path = "/tokens/{id}")
+    public UserToken updateToken(@RequestParam(value = "balance", required = true) Float newBalance , @PathVariable Long id){
+        UserToken oldToken = tokenRepository.findOne(id);
+        oldToken.setBalance(newBalance);
+        UserToken newToken = tokenRepository.save(oldToken);
+        return newToken;
+    }
+
     @GetMapping(path = "/tokens/customers/{id}")
     public UserToken getAllTokens(@PathVariable Long id) {
         return tokenRepository.findByCustomer_Id(id);
@@ -76,15 +86,22 @@ public class CustomerController {
 
     @PostMapping(path = "/payments")
     public Payment createPayment(@Valid @RequestBody Payment payment) {
-        UserToken userToken = tokenRepository.findOne(payment.getTokenId());
-        userToken.setBalance(userToken.getBalance() + payment.getAmount());
-        UserToken updatedToken = tokenRepository.save(userToken);
         return paymentRepository.save(payment);
     }
 
     @GetMapping(path = "/payments/tokens/{id}")
     public List<Payment> getPaymentsByTokenId(@PathVariable Long id) {
         return paymentRepository.getAllByTokenId(id);
+    }
+
+    @PostMapping(path = "/rides")
+    public Ride createNewRide(@Valid @RequestBody Ride ride){
+        return rideRepository.save(ride);
+    }
+
+    @GetMapping(path = "/rides/customers/{id}")
+    public List<Ride> getRidesByCustomer(@PathVariable Long id){
+        return rideRepository.getAllByCustomerIdIs(id);
     }
 
 
