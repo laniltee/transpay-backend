@@ -28,6 +28,8 @@ public class Trip implements Serializable{
 
     private String vehicleId;
 
+    private Long journeyId;
+
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -76,5 +78,13 @@ public class Trip implements Serializable{
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getJourneyId() {
+        return journeyId;
+    }
+
+    public void setJourneyId(Long journeyId) {
+        this.journeyId = journeyId;
     }
 }

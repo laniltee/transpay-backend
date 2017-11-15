@@ -19,19 +19,18 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
-public class Stop implements Serializable{
+public class JourneyStop implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private Journey journey;
+    private Long journeyId;
 
     @NotBlank
     private String name;
 
-    @Min(0)
+    @Min(value = 0, message = "Minimum distance should be 0")
     private float distance;
 
     @Min(0)
@@ -56,14 +55,6 @@ public class Stop implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Journey getJourney() {
-        return journey;
-    }
-
-    public void setJourney(Journey journey) {
-        this.journey = journey;
     }
 
     public String getName() {
@@ -112,5 +103,13 @@ public class Stop implements Serializable{
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getJourneyId() {
+        return journeyId;
+    }
+
+    public void setJourneyId(Long journeyId) {
+        this.journeyId = journeyId;
     }
 }
