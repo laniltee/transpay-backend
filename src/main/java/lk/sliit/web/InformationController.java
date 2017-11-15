@@ -28,6 +28,11 @@ public class InformationController {
         return journeyRepository.findAll();
     }
 
+    @GetMapping(path = "/journeys/{id}")
+    public Journey getJourneyById(@PathVariable Long id) {
+        return journeyRepository.findOne(id);
+    }
+
     @PostMapping(path = "/journeys")
     public Journey createNewJourney(@Valid @RequestBody Journey journey) {
         return journeyRepository.save(journey);

@@ -1,7 +1,9 @@
 package lk.sliit.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lk.sliit.repository.JourneyRepository;
+import lk.sliit.repository.StopRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,6 +23,13 @@ import java.util.Date;
         allowGetters = true)
 public class Ride implements Serializable{
 
+    @Autowired
+    @Transient
+    JourneyRepository journeyRepository;
+    @Autowired
+    @Transient
+    StopRepository stopRepository;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -34,6 +43,10 @@ public class Ride implements Serializable{
     private float amount;
 
     private Long journeyId;
+
+    private Long tripId;
+
+    private String journeyName, startName, endName;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -107,5 +120,37 @@ public class Ride implements Serializable{
 
     public void setJourneyId(Long journeyId) {
         this.journeyId = journeyId;
+    }
+
+    public String getJourneyName() {
+        return journeyName;
+    }
+
+    public void setJourneyName(String journeyName) {
+        this.journeyName = journeyName;
+    }
+
+    public String getStartName() {
+        return startName;
+    }
+
+    public void setStartName(String startName) {
+        this.startName = startName;
+    }
+
+    public String getEndName() {
+        return endName;
+    }
+
+    public void setEndName(String endName) {
+        this.endName = endName;
+    }
+
+    public Long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 }

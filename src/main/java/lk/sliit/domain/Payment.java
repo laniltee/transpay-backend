@@ -1,6 +1,9 @@
 package lk.sliit.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.CreditCardNumber;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,25 +28,22 @@ public class Payment implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private long tokenId;
-
     private String type;
-
+    @NotBlank(message = "Please select a credit card type")
     private String cardType;
+    @CreditCardNumber(message = "Credit card number seems to be not valid")
     private String cardNo;
+    @Range(min = 0, max = 999, message = "Please enter a valid CVC")
     private int cvc;
-    @Future
+    @Future(message = "Credit card expiry date is not valid")
     private Date expiryDate;
-
     @Min(0)
     private float amount;
-
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
-
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
@@ -127,5 +127,9 @@ public class Payment implements Serializable{
 
     public void setTokenId(long tokenId) {
         this.tokenId = tokenId;
+    }
+
+    public enum CardTypes {
+        Visa, American, Discover
     }
 }

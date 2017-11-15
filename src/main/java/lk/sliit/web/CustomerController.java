@@ -8,7 +8,6 @@ import lk.sliit.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -86,6 +85,9 @@ public class CustomerController {
 
     @PostMapping(path = "/payments")
     public Payment createPayment(@Valid @RequestBody Payment payment) {
+        UserToken oldToken = tokenRepository.findOne(payment.getTokenId());
+        oldToken.setBalance(oldToken.getBalance() + payment.getAmount());
+        UserToken newToken = tokenRepository.save(oldToken);
         return paymentRepository.save(payment);
     }
 
@@ -95,7 +97,15 @@ public class CustomerController {
     }
 
     @PostMapping(path = "/rides")
-    public Ride createNewRide(@Valid @RequestBody Ride ride){
+    public Ride createNewRide(@Valid @RequestBody Ride ride, HttpServletResponse response) {
+        UserToken oldToken = tokenRepository.findByCustomer_Id(ride.getCustomerId());
+        if (oldToken.getBalance() < ride.getAmount()) {
+            response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
+            return null;
+        } else {
+            oldToken.setBalance(oldToken.getBalance() - ride.getAmount());
+            UserToken newToken = tokenRepository.save(oldToken);
+        }
         return rideRepository.save(ride);
     }
 
