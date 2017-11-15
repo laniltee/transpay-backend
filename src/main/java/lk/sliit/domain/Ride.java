@@ -27,11 +27,11 @@ public class Ride implements Serializable{
 
     @ManyToOne
     @JsonIgnore
-    private Stop startedAt;
+    private JourneyStop startedAt;
 
     @ManyToOne
     @JsonIgnore
-    private Stop endedAt;
+    private JourneyStop endedAt;
 
     private float amount;
 
@@ -57,19 +57,19 @@ public class Ride implements Serializable{
         this.id = id;
     }
 
-    public Stop getStartedAt() {
+    public JourneyStop getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(Stop startedAt) {
+    public void setStartedAt(JourneyStop startedAt) {
         this.startedAt = startedAt;
     }
 
-    public Stop getEndedAt() {
+    public JourneyStop getEndedAt() {
         return endedAt;
     }
 
-    public void setEndedAt(Stop endedAt) {
+    public void setEndedAt(JourneyStop endedAt) {
         this.endedAt = endedAt;
     }
 
