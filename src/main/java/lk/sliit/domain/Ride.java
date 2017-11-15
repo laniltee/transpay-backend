@@ -25,19 +25,15 @@ public class Ride implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JsonIgnore
-    private JourneyStop startedAt;
+    private Long customerId;
 
-    @ManyToOne
-    @JsonIgnore
-    private JourneyStop endedAt;
+    private Long startedAt;
+
+    private Long endedAt;
 
     private float amount;
 
-    @ManyToOne
-    @JsonIgnore
-    private Journey journey;
+    private Long journeyId;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -57,36 +53,12 @@ public class Ride implements Serializable{
         this.id = id;
     }
 
-    public JourneyStop getStartedAt() {
-        return startedAt;
-    }
-
-    public void setStartedAt(JourneyStop startedAt) {
-        this.startedAt = startedAt;
-    }
-
-    public JourneyStop getEndedAt() {
-        return endedAt;
-    }
-
-    public void setEndedAt(JourneyStop endedAt) {
-        this.endedAt = endedAt;
-    }
-
     public float getAmount() {
         return amount;
     }
 
     public void setAmount(float amount) {
         this.amount = amount;
-    }
-
-    public Journey getJourney() {
-        return journey;
-    }
-
-    public void setJourney(Journey journey) {
-        this.journey = journey;
     }
 
     public Date getCreatedAt() {
@@ -103,5 +75,37 @@ public class Ride implements Serializable{
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(Long startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public Long getEndedAt() {
+        return endedAt;
+    }
+
+    public void setEndedAt(Long endedAt) {
+        this.endedAt = endedAt;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Long getJourneyId() {
+        return journeyId;
+    }
+
+    public void setJourneyId(Long journeyId) {
+        this.journeyId = journeyId;
     }
 }
