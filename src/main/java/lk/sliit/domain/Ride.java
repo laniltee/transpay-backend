@@ -46,7 +46,7 @@ public class Ride implements Serializable{
 
     private Long tripId;
 
-    private String journeyName, startName, endName;
+    private String journeyName, startName, endName, tokenId;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -152,5 +152,13 @@ public class Ride implements Serializable{
 
     public void setTripId(Long tripId) {
         this.tripId = tripId;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 }

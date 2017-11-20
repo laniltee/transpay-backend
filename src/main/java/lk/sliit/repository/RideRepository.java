@@ -10,4 +10,8 @@ import java.util.List;
  */
 public interface RideRepository extends JpaRepository<Ride, Long> {
     List<Ride> getAllByCustomerIdIs(Long customerId);
+    int countByTripIdIs(Long tripId);
+    List<Ride> getAllByTripIdIs(Long tripId);
+    //List<Ride> getAllByStartedAtIsGreaterThanEqualAndEndedAtLessThanEqualAAndTripIdIs(Long startedAt, Long endedAt, Long tripId);
+
 }

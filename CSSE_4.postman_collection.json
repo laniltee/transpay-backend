@@ -1,12 +1,136 @@
 {
 	"variables": [],
 	"info": {
-		"name": "CSSE_4",
-		"_postman_id": "cf2a5694-e784-c694-1cfc-d18adbb4dd29",
+		"name": "trans-pay",
+		"_postman_id": "7cbf7b69-f345-ad34-5381-7dda9616124c",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Get all customers",
+			"request": {
+				"url": "localhost:8081/api/customers",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add new customer",
+			"request": {
+				"url": "localhost:8081/api/customers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"Lanil\",\n\t\"lastName\": \"Marasinghe\",\n\t\"email\": \"lanilmarasinghe@gmail.com\",\n\t\"contactNo\": \"0777881982\",\n\t\"address\": \"178, Meegoda\",\n\t\"password\": \"Pearson114\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Login user",
+			"request": {
+				"url": "localhost:8081/api/authenticate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"ttcphilips@gmail.com\",\n\t\"password\": \"RichmondPride\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new token",
+			"request": {
+				"url": "localhost:8081/api/tokens",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\": \"regular\",\n\t\"customer\": {\n\t\t\"id\": 2\n\t},\n\t\"balance\": 0,\n\t\"expiresAt\": \"2017-12-31\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all tokens",
+			"request": {
+				"url": "localhost:8081/api/tokens",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get token by customer",
+			"request": {
+				"url": "localhost:8081/api/tokens/customers/2",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add new payment",
+			"request": {
+				"url": "localhost:8081/api/payments",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"tokenId\": 1,\n\t\"cardType\": \"visa\",\n\t\"cardNo\": \"23123\",\n\t\"cvc\": 123,\n\t\"expiryDate\": \"2018-08-31\",\n\t\"amount\": 240\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get payments by token id",
+			"request": {
+				"url": "localhost:8081/api/payments/tokens/10",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
 		{
 			"name": "Get all stops",
 			"request": {
@@ -43,7 +167,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"journeyId\": 1,\n\t\"name\": \"Habarakada\",\n\t\"distance\": 2,\n\t\"stopIndex\": 1,\n\t\"baseFare\": 12\n}"
+					"raw": "{\r\n\t\"journeyId\": 2,\r\n\t\"name\": \"Pettah\",\r\n\t\"distance\": 35,\r\n\t\"stopIndex\": 10,\r\n\t\"baseFare\": 52\r\n}"
 				},
 				"description": ""
 			},
@@ -63,7 +187,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"190 - Meegoda - Pettah\"\n}"
+					"raw": "{\r\n\t\"name\": \"138 - Homagama - Pettah\"\r\n}"
 				},
 				"description": ""
 			},
@@ -72,7 +196,7 @@
 		{
 			"name": "Get stops by journey",
 			"request": {
-				"url": "http://localhost:8081/api/stops/journeys/1",
+				"url": "http://localhost:8081/api/stops/journeys/2",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -136,8 +260,19 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"customerId\": 1,\n\t\"startedAt\": 1,\n\t\"endedAt\": 2,\n\t\"amount\": 20.99,\n\t\"journeyId\": 1\n}"
+					"raw": "{\r\n\t\"customerId\": 1,\r\n\t\"startedAt\": 1,\r\n\t\"endedAt\": 5,\r\n\t\"amount\": 20.99,\r\n\t\"journeyId\": 2,\r\n\t        \"journeyName\": \"138\",\r\n        \"startName\": \"Homagama\",\r\n        \"endName\": \"Maharagama\"\r\n}"
 				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new trip",
+			"request": {
+				"url": "http://localhost:8081/api/trips",
+				"method": "GET",
+				"header": [],
+				"body": {},
 				"description": ""
 			},
 			"response": []

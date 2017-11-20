@@ -1,10 +1,7 @@
 package lk.sliit.web;
 
 import lk.sliit.domain.*;
-import lk.sliit.repository.CustomerRepository;
-import lk.sliit.repository.PaymentRepository;
-import lk.sliit.repository.RideRepository;
-import lk.sliit.repository.TokenRepository;
+import lk.sliit.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +30,9 @@ public class CustomerController {
 
     @Autowired
     RideRepository rideRepository;
+
+    @Autowired
+    TripRepository tripRepository;
 
     @GetMapping(path = "/customers")
     public List<Customer> getAllCustomers() {
@@ -78,6 +78,11 @@ public class CustomerController {
         return newToken;
     }
 
+    @GetMapping(path="/tokens/{id}")
+    public UserToken findTokenById(@PathVariable Long id){
+        return tokenRepository.findOne(id);
+    }
+
     @GetMapping(path = "/tokens/customers/{id}")
     public UserToken getAllTokens(@PathVariable Long id) {
         return tokenRepository.findByCustomer_Id(id);
@@ -86,8 +91,12 @@ public class CustomerController {
     @PostMapping(path = "/payments")
     public Payment createPayment(@Valid @RequestBody Payment payment) {
         UserToken oldToken = tokenRepository.findOne(payment.getTokenId());
+
         oldToken.setBalance(oldToken.getBalance() + payment.getAmount());
+
         UserToken newToken = tokenRepository.save(oldToken);
+
+
         return paymentRepository.save(payment);
     }
 
@@ -99,11 +108,18 @@ public class CustomerController {
     @PostMapping(path = "/rides")
     public Ride createNewRide(@Valid @RequestBody Ride ride, HttpServletResponse response) {
         UserToken oldToken = tokenRepository.findByCustomer_Id(ride.getCustomerId());
+        Trip oldTrip =tripRepository.findOne(ride.getTripId());
+
         if (oldToken.getBalance() < ride.getAmount()) {
             response.setStatus(HttpServletResponse.SC_PAYMENT_REQUIRED);
             return null;
         } else {
             oldToken.setBalance(oldToken.getBalance() - ride.getAmount());
+
+            oldTrip.setPassengers(oldTrip.getPassengers() + 1);
+            oldTrip.setIncome(oldTrip.getIncome() + ride.getAmount());
+
+            Trip newTrip = tripRepository.save(oldTrip);
             UserToken newToken = tokenRepository.save(oldToken);
         }
         return rideRepository.save(ride);

@@ -49,6 +49,8 @@ public class Payment implements Serializable{
     @LastModifiedDate
     private Date updatedAt;
 
+    private long tripId;
+
     public Long getId() {
         return id;
     }
@@ -131,5 +133,13 @@ public class Payment implements Serializable{
 
     public enum CardTypes {
         Visa, American, Discover
+    }
+
+    public long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(long tripId) {
+        this.tripId = tripId;
     }
 }

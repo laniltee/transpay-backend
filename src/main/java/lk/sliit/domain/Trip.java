@@ -30,6 +30,12 @@ public class Trip implements Serializable{
 
     private Long journeyId;
 
+    private Long tripId;
+
+    private String journeyName;
+    private int passengers;
+    private double income;
+
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -86,5 +92,37 @@ public class Trip implements Serializable{
 
     public void setJourneyId(Long journeyId) {
         this.journeyId = journeyId;
+    }
+
+    public String getJourneyName() {
+        return journeyName;
+    }
+
+    public void setJourneyName(String journeyName) {
+        this.journeyName = journeyName;
+    }
+
+    public int getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(int passengers) {
+        this.passengers = passengers;
+    }
+
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
+
+    public Long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 }

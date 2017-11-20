@@ -1,15 +1,15 @@
 package lk.sliit.web;
 
-import lk.sliit.domain.Journey;
-import lk.sliit.domain.JourneyStop;
-import lk.sliit.domain.Trip;
+import lk.sliit.domain.*;
 import lk.sliit.repository.JourneyRepository;
+import lk.sliit.repository.RideRepository;
 import lk.sliit.repository.StopRepository;
 import lk.sliit.repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -22,6 +22,8 @@ public class InformationController {
     StopRepository stopRepository;
     @Autowired
     TripRepository tripRepository;
+    @Autowired
+    RideRepository rideRepository;
 
     @GetMapping(path = "/journeys")
     public List<Journey> getAllJourneys() {
@@ -69,6 +71,46 @@ public class InformationController {
     @PostMapping(path = "/trips")
     public Trip createNewTrip(@Valid @RequestBody Trip trip) {
         return tripRepository.save(trip);
+    }
+
+    @PutMapping(path = "/trips/{id}")
+    public Trip updateTripById(@PathVariable Long id) {
+        Trip oldTrip1 = tripRepository.findOne(id);
+        oldTrip1.setStatus(false);
+        Trip newTrip = tripRepository.save(oldTrip1);
+        return newTrip;
+    }
+
+    @GetMapping(path = "/trips/{id}")
+    public Trip findTripById(@PathVariable Long id) {
+        return tripRepository.findOne(id);
+    }
+
+    @GetMapping(path = "/rides")
+    public List<Ride> getAllRides() {
+        return rideRepository.findAll();
+    }
+
+    @GetMapping(path = "/tocken_test")
+    public List<Ride> getValidTripTokens(@RequestParam(value = "trip", required = true) long trip){
+        return rideRepository.getAllByTripIdIs(trip);
+    }
+
+    @GetMapping(path = "/stats/trips")
+    public List<TripInfo> getTripInfo(@RequestParam(value = "filter", required = true) String filter) {
+        List<Trip> result = this.getAllTrips(filter);
+        List<TripInfo> tripResult = new ArrayList<>();
+
+
+        for (int i = 0; i < result.size(); i++) {
+            if(result.get(i).getJourneyId() == null){
+                continue;
+            }
+            System.out.println("Infor Controller: " + result.get(i).getId());
+            TripInfo tripInfo = new TripInfo(result.get(i).getId());
+            tripResult.add(tripInfo);
+        }
+        return tripResult;
     }
 
 
