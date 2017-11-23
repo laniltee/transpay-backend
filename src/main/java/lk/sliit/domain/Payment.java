@@ -28,22 +28,31 @@ public class Payment implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private long tokenId;
+
     private String type;
+
     @NotBlank(message = "Please select a credit card type")
     private String cardType;
+
     @CreditCardNumber(message = "Credit card number seems to be not valid")
     private String cardNo;
-    @Range(min = 0, max = 999, message = "Please enter a valid CVC")
+
+    @Range(min = 100, max = 999, message = "Please enter a valid CVC")
     private int cvc;
+
     @Future(message = "Credit card expiry date is not valid")
     private Date expiryDate;
+
     @Min(0)
     private float amount;
+
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate

@@ -2,6 +2,7 @@ package lk.sliit.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lk.sliit.constants.ControllerConstants;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,7 +21,7 @@ import java.util.Date;
 @Table(name = "customers", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"email", "contactNo"}) })
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
+@JsonIgnoreProperties(value = {ControllerConstants.CREATED_AT_COL, ControllerConstants.UPDATED_AT_COL},
         allowGetters = true)
 public class Customer implements Serializable{
 
