@@ -37,6 +37,7 @@ public class RideController {
         return rideRepository.getJourneyCount(id);
     }
 
+
     @GetMapping(path = "/statistics/spending/{id}")
     public List<Object> getTotalSpent(@PathVariable Long id) {
         return rideRepository.getSpentAmount(id);
